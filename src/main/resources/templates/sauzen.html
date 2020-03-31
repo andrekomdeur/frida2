@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="fragments::head(title='Frida\'s sauzen')"></head>
+	<body th:class="${kleur}">
+		<nav th:replace="fragments::menu"></nav>
+		<h1>Sauzen van Frida's Frituur</h1>
+		<ul>
+			<li th:each="saus:${sauzen}" th:object="${saus}">
+				<dl>
+					<a th:href="@{/sauzen/{nummer}(nummer=*{nummer})}" th:text="*{naam}"></a>
+				</dl>
+				<dd class="ingredienten">
+					<span
+							th:each="ingredient:*{ingredienten}"
+							th:text="|${ingredient} |"/>
+				</dd>
+			</li>
+		</ul>
+	</body>
+</html>

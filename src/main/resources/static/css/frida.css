@@ -1,0 +1,64 @@
+
+body {
+<!-- background-color: #aff8d8; -->
+font-family: sans-serif;
+}
+.roze {
+	background-color: LightPink;
+}
+.blauw {
+	background-color: LightBlue;
+}
+.geel {
+	background-color: #FFFFDE;
+}
+
+.naastMekaar {
+padding-left: 0;
+}
+.naastMekaar li {
+display:inline;
+}
+
+h1 {
+color: #4d4fb0;
+}
+
+nav ul {
+	background-color: #891010;
+	padding: 0.1em 0;
+}
+
+nav li {
+	display: inline;
+}
+
+nav li a {
+	color: #fad1d1;
+	font-weight: bold;
+	padding-left: 0.5em;
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+nav li a:hover {
+	color: #f0b87f;
+}
+
+dd.ingredienten {
+	font-size: 0.7em;
+	padding: 0;
+}
+
+dd,dt {
+margin-left: 0;
+}
+dt {
+margin-top: 0.5em;
+}
+dd {
+font-weight: bold;
+}
+dd ul {
+margin-top: 0;
+}
