@@ -39,11 +39,11 @@ public class JdbcSnackRepository implements SnackRepository {
             return Optional.empty();
         }
     }
-
+    private final RowMapper<Snack> snackRowMapper = (result, rowNum) -> new Snack(
+            result.getLong("id"), result.getString("naam"), result.getBigDecimal("prijs"));
     @Override
-    public List<Snack> findByNaam(String naam) {
-        String sql = "select id, naam, prijs from snacks"
-                + " where naam=? order by naam";
-        return template.query(sql, snackMapper, naam);
+    public List<Snack> findByBeginNaam(String beginNaam) {
+        String sql = "select id, naam, prijs from snacks where naam like ? order by naam";
+        return template.query(sql, snackRowMapper, beginNaam + '%');
     }
 }

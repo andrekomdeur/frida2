@@ -1,5 +1,6 @@
 package be.vdab.frida.repositories;
 import be.vdab.frida.domain.Snack;
+import be.vdab.frida.exceptions.SnackNietGevondenException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
@@ -9,6 +10,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @JdbcTest
 @Import(JdbcSnackRepository.class)
 @Sql("/insertSnacks.sql")
@@ -32,16 +34,27 @@ class JdbcSnackRepositoryTest extends AbstractTransactionalJUnit4SpringContextTe
         assertThat(super.jdbcTemplate.queryForObject(
                 "select prijs from snacks where id=?", BigDecimal.class, id)).isOne();
     }
-
+    @Test
+    void updateOnbestaandeSnack() {
+        assertThatExceptionOfType(SnackNietGevondenException.class)
+                .isThrownBy(() -> repository.update(new Snack(-1L,"test",BigDecimal.ONE)));
+    }
     @Test
     void findById() {
         assertThat(repository.findById(idVanTestSnack()).get().getNaam()).isEqualTo("test");
     }
     @Test
-    void findByNaam() {
-        assertThat(repository.findByNaam("test2"))
-                .hasSize(super.countRowsInTableWhere(SNACKS, "naam='test2'"))
-                .extracting(Snack->Snack.getNaam().toLowerCase()).isSorted();
+    void findByOnbestaandeIdVindtGeenSnack() {
+        assertThat(repository.findById(-1)).isNotPresent();
+    }
+    @Test
+    void findByBeginNaam() {
+        assertThat(repository.findByBeginNaam("t"))
+                .hasSize(super.jdbcTemplate.queryForObject(
+                        "select count(*) from snacks where naam like 't%'", Integer.class))
+                .extracting(snack -> snack.getNaam().toLowerCase())
+                .allSatisfy(naam -> assertThat(naam.startsWith("t")))
+                .isSorted();
     }
 
 }
