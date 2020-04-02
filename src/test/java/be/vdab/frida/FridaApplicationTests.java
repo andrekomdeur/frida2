@@ -9,5 +9,4 @@ class FridaApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
